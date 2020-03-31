@@ -264,6 +264,50 @@ barryContactInfo.sendMail(abdulContactInfo.address)
 //     The calculateTotal method should calculate and return a total for all the items in your shopping cart.
 //     The printShoppingCart method should loop over all the items in the cart and print them to the console. It should also print the total price of all the items in your shopping cart.
 
+var shoppingCart = {
+    items: [
+      {
+        name: "Bananas",
+        totalPrice: 2.75
+      },
+      {
+        name: "English Muffins",
+        totalPrice: 3.99
+      },
+      {
+        name: "Peanut Butter",
+        totalPrice: 2.99
+      }
+    ],
+    addToCart: function(objectToAdd){
+      this.items.push(objectToAdd)
+    },
+    calculateTotal: function(){
+        var sum = 0
+        for(var i = 0; i < this.items.length; i++){
+            sum += this.items[i].totalPrice
+        }
+        return sum
+    },
+    printShoppingCart: function(){
+        for(var i = 0; i < this.items.length; i++){
+            console.log(this.items[i])
+        }
+        console.log(`Total: ${this.calculateTotal()}`)
+    }
+  }
+
+shoppingCart.addToCart({name: "Poptarts", totalPrice: 3.99})
+shoppingCart.printShoppingCart()
+
+
+
+
+
+
+
+
+
 // Library System
 
 // Your job is to represent a library system with JavaScript objects and methods. In your JavaScript file, create the following objects:
@@ -287,3 +331,7 @@ barryContactInfo.sendMail(abdulContactInfo.address)
 //         Patrons can check out a maximum of ten books. If they go over that maximum, the librarian should see an error message in the console.
 //         Patrons should not be able to check in a book that they haven't checked out. If they try to do this, the librairan should see an error message in the console.
 //         If a patron tries to check out a book that's out of stock, the librarian should see an error message.
+
+
+
+
