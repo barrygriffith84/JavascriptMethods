@@ -314,7 +314,15 @@ shoppingCart.printShoppingCart()
 //         A checkedOutBooks property that holds an array of book titles (strings)
 //         A overdueFees property that holds a number
 //         A printBooks method should print all of the books a patron has currently checked out to the console.
-//     
+//     A librarian object with these properties and methods:
+//         A firstName property
+//         A lastName property
+//         A checkOutBook method that accepts three parameters: a string of a book title, a patron object, and a library object. If the book is currently in stock, this method should add the given book title to the patron's checkedOutBooks array and remove it from the library's currentInventory array. (Hint: look up .splice()).
+//         A chargeFee method that accepts two parameters: a number that represents the fee amount and a patron object. This method should add the fee object to the patron's overdueFees property.
+//         A checkInBook method that accepts three parameters: a string of a book title, a patron object, and a library object. This method should remove the given book title from the patron's checkedOutBooks array and add it back to the library's currentInventory array.
+//         Patrons can check out a maximum of ten books. If they go over that maximum, the librarian should see an error message in the console.
+//         Patrons should not be able to check in a book that they haven't checked out. If they try to do this, the librairan should see an error message in the console.
+//         If a patron tries to check out a book that's out of stock, the librarian should see an error message.
 
 
 
@@ -347,56 +355,41 @@ var barryPatronObject = {
     }
 }
 
-// A librarian object with these properties and methods:
-//         A firstName property
-//         A lastName property
-//         A checkOutBook method that accepts three parameters: a string of a book title, a patron object, and a library object. If the book is currently in stock, this method should add the given book title to the patron's checkedOutBooks array and remove it from the library's currentInventory array. (Hint: look up .splice()).
-//         A chargeFee method that accepts two parameters: a number that represents the fee amount and a patron object. This method should add the fee object to the patron's overdueFees property.
-//         A checkInBook method that accepts three parameters: a string of a book title, a patron object, and a library object. This method should remove the given book title from the patron's checkedOutBooks array and add it back to the library's currentInventory array.
-//         Patrons can check out a maximum of ten books. If they go over that maximum, the librarian should see an error message in the console.
-//         Patrons should not be able to check in a book that they haven't checked out. If they try to do this, the librairan should see an error message in the console.
-//         If a patron tries to check out a book that's out of stock, the librarian should see an error message.
-
 var franklinLibrarianObject = {
     firstName: "Melvil",
     lastName: "Dewey",
     checkOutBook: function(libraryBook, patronObject, libraryObject){
-        for(var i = 0; i < libraryObject.currentInventory.length; i++){                                  // for loop that cycles through each book in a library's inventory
+        inStockBool = false                                                                              // Bool variable to track if the book is in stock or not
+        if (patronObject.checkedOutBooks.length >= 10) {                                                 // Checking to see if the patron has checked out the maximum of ten books
+            console.log(`This patron has exceeded the limit on books that can be checked out.  What are they planning on doing with all of those books?  I bet they're doing something wierd with them.`)
+        }else{
+            for(var i = 0; i < libraryObject.currentInventory.length; i++){                              // for loop that cycles through each book in a library's inventory
             if (libraryBook === libraryObject.currentInventory[i]) {                                     // if statement checks to see if the libraryBook matches the book in the library inventory for that iteration
                 patronObject.checkedOutBooks.push(libraryObject.currentInventory[i])                     // if it matches it pushes it to a patron's checkedOutBooks array
                 libraryObject.currentInventory.splice(i, 1)                                              // it then splices it from the library's inventory
+                inStockBool = true                                                                       // Since it found a match it sets the bool variable to true
             }
+        }
+        }
+        if (inStockBool === false) {                                                                     //Checking to see if the book is in stock, send an alert if it isn't.
+            console.log("Sorry, that book isn't in stock.")
         }
     },
     chargeFee: function(fee, patronObject){
         patronObject.overDueFees += fee
     },
     checkInBook: function(libraryBook, patronObject, libraryObject){
-        for(var i = 0; i < patronObject.checkedOutBooks.length; i++){
-            if(libraryBook === patronObject.checkedOutBooks[i]){
-                libraryObject.currentInventory.push(libraryBook)
-                patronObject.checkedOutBooks.splice(i, 1)
+        var checkedOutBool = false                                                                       // a bool to keep track if the user has checked out the book or not before they check it back in
+        for(var i = 0; i < patronObject.checkedOutBooks.length; i++){                                    // for loop to cycle through all of the books in the patron's checkedOutBooks array
+            if(libraryBook === patronObject.checkedOutBooks[i]){                                         // checking each iteration to see if the book matches one in the patron's checkedOutBooks array
+                libraryObject.currentInventory.push(libraryBook)                                         // pushing the book to the library's inventory array
+                patronObject.checkedOutBooks.splice(i, 1)                                                // splicing the book out of the patron's checkOutBooks array
+                checkedOutBool = true                                                                    // setting the checkedOutBool to true since it found a match
             }
+        }
+        if (checkedOutBool === false) {                                                                  // checking to see if the book was checked out by the patron and sending an alert if it wasn't
+            console.log("They never checked this book out.  You need to interrogate them.  Looks like that water-boarding room we had installed in the basement will come in handy after all.")
         }
     }
 }
-
-
-
-// barryPatronObject.printBooks()
-// console.log(carterLibraryObject.currentInventory)
-// franklinLibrarianObject.checkOutBook("Siddhartha", barryPatronObject, carterLibraryObject)
-// barryPatronObject.printBooks()
-// console.log(carterLibraryObject.currentInventory)
-
-barryPatronObject.printBooks()
-console.log(carterLibraryObject.currentInventory)
-
-franklinLibrarianObject.checkInBook("Children of the Night", barryPatronObject, carterLibraryObject)
-
-barryPatronObject.printBooks()
-console.log(carterLibraryObject.currentInventory)
-
-franklinLibrarianObject.chargeFee(0.10, barryPatronObject)
-console.log(barryPatronObject.overDueFees)
 
